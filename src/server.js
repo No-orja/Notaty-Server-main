@@ -6,7 +6,10 @@ const todoRoutes = require('./routes/todoRoutes');
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+    origin: '*'
+  }));
+  
 app.use(express.json());
 
 app.get("/", (req, res) => {
@@ -16,7 +19,7 @@ app.get("/", (req, res) => {
 app.use('/notes', noteRoutes);
 app.use('/todos', todoRoutes);
 
-const PORT = process.env.PORT || 5003;
+const PORT = process.env.PORT || 5004;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
