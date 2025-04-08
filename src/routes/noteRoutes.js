@@ -10,46 +10,74 @@ const {
 
 const router = express.Router();
 
-router.post('/', async (Req, res)=>{
-    const {title, content} = Req.body;
-    const note = await createNote(title, content);
-    res.status(201).json(note);
-})
-
-router.get('/', async(req, res)=>{
-    const notes = await getAllNotes();
-    res.status(200).json(notes);
-})
-
-router.get('/:id', async(req, res)=>{
-    const notes = await getNoteById(req.params.id);
-    res.status(200).json(notes);
-})
-
-router.put('/:id', async(req, res)=>{
-    const {title, content} = req.body;
-    const note = await updateNote(req.params.id, title, content);
-    res.status(200).json(note);
-})
-
-
-router.put('/:id', async (req, res) => {
+// Create a new note
+router.post('/', async (req, res) => {
     try {
-        console.log("🔵 Request to toggle completed status for:", req.params.id);
-
-        const updatedNote = await completedStatus(req.params.id);
-        
-        console.log("🟢 Updated Note:", updatedNote);
-        res.status(200).json(updatedNote);
+        const { title, content } = req.body;
+        const note = await createNote(title, content);
+        res.status(201).json(note);
     } catch (error) {
-        console.error("🔴 Error updating note:", error);
-        res.status(500).json({ message: error.message });
+        console.error('POST /notes error:', error);
+        res.status(500).json({ message: 'Failed to create note' });
     }
 });
 
-router.delete('/:id', async(req, res)=>{
-    const note = await deleteNote(req.params.id);
-    res.status(200).json(note);
-})
+// Get all notes
+router.get('/', async (req, res) => {
+    try {
+        const notes = await getAllNotes();
+        res.status(200).json(notes);
+    } catch (error) {
+        console.error('GET /notes error:', error);
+        res.status(500).json({ message: 'Failed to fetch notes' });
+    }
+});
+
+// Get note by ID
+router.get('/:id', async (req, res) => {
+    try {
+        const note = await getNoteById(req.params.id);
+        res.status(200).json(note);
+    } catch (error) {
+        console.error(`GET /notes/${req.params.id} error:`, error);
+        res.status(500).json({ message: 'Failed to fetch note' });
+    }
+});
+
+// Update note
+router.put('/:id', async (req, res) => {
+    try {
+        const { title, content } = req.body;
+        const note = await updateNote(req.params.id, title, content);
+        res.status(200).json(note);
+    } catch (error) {
+        console.error(`PUT /notes/${req.params.id} error:`, error);
+        res.status(500).json({ message: 'Failed to update note' });
+    }
+});
+
+// Toggle completed status
+router.patch('/:id/completed', async (req, res) => {
+    try {
+        console.log("🔵 Request to toggle completed status for:", req.params.id);
+        const updatedNote = await completedStatus(req.params.id);
+        console.log("🟢 Updated Note:", updatedNote);
+        res.status(200).json(updatedNote);
+    } catch (error) {
+        console.error(`PATCH /notes/${req.params.id}/completed error:`, error);
+        res.status(500).json({ message: 'Failed to update completed status' });
+    }
+});
+
+// Delete note
+router.delete('/:id', async (req, res) => {
+    try {
+        const note = await deleteNote(req.params.id);
+        res.status(200).json(note);
+    } catch (error) {
+        console.error(`DELETE /notes/${req.params.id} error:`, error);
+        res.status(500).json({ message: 'Failed to delete note' });
+    }
+});
 
 module.exports = router;

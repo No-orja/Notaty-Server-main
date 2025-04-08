@@ -7,7 +7,9 @@ const todoRoutes = require('./routes/todoRoutes');
 const app = express();
 
 app.use(cors({
-    origin: '*'
+    origin: '*', // أو حط localhost و netlify مباشرة لو حبيت تخصّصهم
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type']
   }));
   
 app.use(express.json());
