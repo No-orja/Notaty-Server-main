@@ -25,7 +25,9 @@ const completedStatus = async (id) => {
     const note = await Note.findById(id);
     if (!note) throw new Error("Note not found");
 
-    return await Note.findByIdAndUpdate(id, { completed: !note.completed }, { new: true });
+    note.completed = !note.completed;
+    await note.save();
+    return note;
 };
 
 const deleteNote = async (id)=>{

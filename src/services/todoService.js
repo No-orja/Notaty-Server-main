@@ -21,8 +21,17 @@ const deleteTodo = async (id)=>{
     return await Todo.findByIdAndDelete(id);
 }
 
-const updateTodo = async (id, task, isCompleted)=>{
-    return await Todo.findByIdAndUpdate(id, {task, isCompleted}, {new: true});
+const updateTodo = async (id, task)=>{
+    return await Todo.findByIdAndUpdate(id, {task}, {new: true});
 }
 
-module.exports = {createTodo, getAllTodos, getTodoById, deleteTodo, updateTodo};
+const toggleTodoCompleted = async (id)=>{
+    const todo = await Todo.findById(id);
+    if (!todo) throw new Error('Todo not found'); 
+
+    todo.isCompleted = !todo.isCompleted;
+    await todo.save();
+    return todo;
+}
+
+module.exports = {createTodo, getAllTodos, getTodoById, deleteTodo, updateTodo, toggleTodoCompleted};

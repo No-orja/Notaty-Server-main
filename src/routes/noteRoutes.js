@@ -57,11 +57,9 @@ router.put('/:id', async (req, res) => {
 });
 
 // Toggle completed status
-router.patch('/:id/completed', async (req, res) => {
+router.patch('/:id/toggle-complete', async (req, res) => {
     try {
-        console.log("🔵 Request to toggle completed status for:", req.params.id);
         const updatedNote = await completedStatus(req.params.id);
-        console.log("🟢 Updated Note:", updatedNote);
         res.status(200).json(updatedNote);
     } catch (error) {
         console.error(`PATCH /notes/${req.params.id}/completed error:`, error);

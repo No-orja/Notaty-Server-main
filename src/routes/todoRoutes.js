@@ -4,7 +4,8 @@ const {
   getAllTodos,
   getTodoById,
   updateTodo,
-  deleteTodo
+  deleteTodo,
+  toggleTodoCompleted
 } = require('../services/todoService');
 
 const router = express.Router();
@@ -46,8 +47,8 @@ router.get('/:id', async (req, res) => {
 // Update todo
 router.put('/:id', async (req, res) => {
   try {
-    const { task, isCompleted } = req.body;
-    const todo = await updateTodo(req.params.id, task, isCompleted);
+    const { task } = req.body;
+    const todo = await updateTodo(req.params.id, task);
     res.status(200).json(todo);
   } catch (error) {
     console.error(`PUT /todos/${req.params.id} error:`, error);
@@ -65,5 +66,17 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ message: 'Failed to delete todo' });
   }
 });
+
+// Toggle completed status
+router.patch('/:id/toggle-complete', async (req, res)=>{
+    try{
+      const updatedTodo = await toggleTodoCompleted(req.params.id);
+      res.status(200).json(updatedTodo);
+    }catch(error){
+        console.error(`PATCH /todos/${req.params.id}/toggle-complete error:`, error);
+        res.status(500).json({ message: 'Failed to toggle completed status' });
+    }
+})
+
 
 module.exports = router;

@@ -1,14 +1,14 @@
 const express = require('express');
 const cors = require('cors');
-require('./db/connection');
-const noteRoutes = require('./routes/noteRoutes');
-const todoRoutes = require('./routes/todoRoutes');
+require('./src/db/connection');
+const noteRoutes = require('./src/routes/noteRoutes');
+const todoRoutes = require('./src/routes/todoRoutes');
 
 const app = express();
 
 app.use(cors({
     origin: '*', // أو حط localhost و netlify مباشرة لو حبيت تخصّصهم
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type']
   }));
   
@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
 app.use('/notes', noteRoutes);
 app.use('/todos', todoRoutes);
 
-const PORT = process.env.PORT || 5005;
+const PORT = process.env.PORT || 5008;
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
