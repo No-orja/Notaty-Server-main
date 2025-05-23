@@ -7,10 +7,10 @@ const todoRoutes = require('./src/routes/todoRoutes');
 const app = express();
 
 app.use(cors({
-    origin: '*', // أو حط localhost و netlify مباشرة لو حبيت تخصّصهم
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
-    allowedHeaders: ['Content-Type']
-  }));
+  origin: '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+  allowedHeaders: ['Content-Type']
+}));
   
 app.use(express.json());
 
@@ -24,5 +24,5 @@ app.use('/todos', todoRoutes);
 const PORT = process.env.PORT || 5008;
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
